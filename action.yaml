@@ -1,0 +1,10 @@
+Steps:
+  - DisplayName: "My Step"
+    Description: "This is a sample step"
+    Type: "Workspace"
+    CapacityId: "12345"
+    Token: "my_token"
+    WorkspaceId: "workspace_123"
+    Outputs:
+      - Name: "output_id"
+        Key: "ID"
