@@ -11,7 +11,7 @@ schemaType: Bundle
 schemaVersion: 1.0.1
 
 # Name of the bundle
-name: porter-hello1
+name: test2
 
 # Version of the bundle. Change this each time you modify a published bundle.
 version: 0.1.0

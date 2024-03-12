@@ -14,16 +14,28 @@
 # Porter targets linux/amd64 by default. Change the --platform flag to target a different platform
 FROM --platform=linux/amd64 debian:stable-slim
 WORKDIR /app
-COPY  --link --chmod=0755 /bin/release/net7.0 /app
-COPY  --link --chmod=0755 /action.yaml /app
-RUN echo $PATH
-ENV PATH="$PATH:/app/bin/ubuntu.16.04-x64"
-RUN echo $PATH
+# COPY  --link --chmod=0755 /bin/release/net7.0/ /app
+# COPY  --link --chmod=0755 /action.yaml /app
+# RUN echo $PATH
+# ENV PATH="$PATH:/app/bin/ubuntu.16.04-x64"
+# RUN echo $PATH
 # PORTER_INIT
+
+# RUN chmod +x /bin/release/net7.0/
 
 RUN rm -f /etc/apt/apt.conf.d/docker-clean; echo 'Binary::apt::APT::Keep-Downloaded-Packages "true";' > /etc/apt/apt.conf.d/keep-cache
 RUN --mount=type=cache,target=/var/cache/apt --mount=type=cache,target=/var/lib/apt \
     apt-get update && apt-get install -y ca-certificates
+RUN apt-get update && apt-get install wget -y
+RUN apt-get update && apt-get install -y gpg
+RUN wget -O - https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor -o microsoft.asc.gpg
+RUN mv microsoft.asc.gpg /etc/apt/trusted.gpg.d/
+RUN wget https://packages.microsoft.com/config/debian/11/prod.list
+RUN mv prod.list /etc/apt/sources.list.d/microsoft-prod.list
+RUN chown root:root /etc/apt/trusted.gpg.d/microsoft.asc.gpg
+RUN chown root:root /etc/apt/sources.list.d/microsoft-prod.list
+RUN apt-get update && \
+    apt-get install -y dotnet-sdk-7.0
 
 # PORTER_MIXINS
 
